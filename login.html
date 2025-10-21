@@ -5,6 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Party Hall Booking</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('image_2024-09-30-12-39-56_66fa9c1c557a9.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            background: rgba(76, 175, 80, 0.9);
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .login-container, .register-container {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        input, select, button {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <h1>Party Hall Booking</h1>
@@ -36,78 +90,6 @@
         <p><a href="#" id="backToLogin">Back to Login</a></p>
     </div>
 
-    <script>
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-
-        const loginForm = document.getElementById('loginForm');
-        const registerLink = document.getElementById('registerLink');
-        const createAccountBtn = document.getElementById('createAccountBtn');
-        const registerContainer = document.querySelector('.register-container');
-        const loginContainer = document.querySelector('.login-container');
-        const backToLogin = document.getElementById('backToLogin');
-
-        document.getElementById('role').addEventListener('change', function(){
-            if(this.value === 'user'){
-                registerLink.style.display = 'block';
-            } else {
-                registerLink.style.display = 'none';
-            }
-        });
-
-        createAccountBtn.addEventListener('click', function(e){
-            e.preventDefault();
-            loginContainer.style.display = 'none';
-            registerContainer.style.display = 'block';
-        });
-
-        backToLogin.addEventListener('click', function(e){
-            e.preventDefault();
-            loginContainer.style.display = 'block';
-            registerContainer.style.display = 'none';
-        });
-
-        loginForm.addEventListener('submit', function(e){
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const role = document.getElementById('role').value;
-
-            if(role === 'admin'){
-                if(username === 'admin' && password === 'admin'){
-                    alert("Admin Login Successful!");
-                    window.location.href = "admin.html";
-                } else {
-                    alert("Invalid Admin Credentials!");
-                }
-            } else if(role === 'user'){
-                const user = users.find(u => u.username === username && u.password === password);
-                if(user){
-                    alert("User Login Successful!");
-                    window.location.href = "user.html";
-                } else {
-                    alert("Invalid User Credentials!");
-                }
-            } else {
-                alert("Please select a role!");
-            }
-        });
-
-        document.getElementById('registerForm').addEventListener('submit', function(e){
-            e.preventDefault();
-            const regUsername = document.getElementById('regUsername').value;
-            const regPassword = document.getElementById('regPassword').value;
-
-            if(users.some(u => u.username === regUsername)){
-                alert("Username already exists!");
-                return;
-            }
-
-            users.push({username: regUsername, password: regPassword});
-            localStorage.setItem('users', JSON.stringify(users));
-            alert("Account created successfully! Please login.");
-            registerContainer.style.display = 'none';
-            loginContainer.style.display = 'block';
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
