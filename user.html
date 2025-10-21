@@ -1,39 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User - Party Hall Booking</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User - Party Hall Booking</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to Party Hall Booking</h1>
+    <h1>Welcome User</h1>
+    <button onclick="logout()">Logout</button>
 
-        <div class="search-section">
-            <h2>Search Halls</h2>
-            <input type="text" id="city" placeholder="Enter City">
-            <input type="text" id="locality" placeholder="Enter Locality">
-            <button onclick="searchHalls()">Search</button>
-        </div>
-
-        <div class="results">
-            <h2>Available Halls</h2>
-            <table id="hallTable">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>City</th>
-                        <th>Locality</th>
-                        <th>Capacity</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+    <div class="search-section">
+        <h2>Search Party Halls</h2>
+        <input type="text" id="city" placeholder="Enter City">
+        <input type="text" id="locality" placeholder="Enter Locality">
+        <button onclick="searchHalls()">Search</button>
     </div>
 
-    <script src="script.js"></script>
+    <div id="hallsList"></div>
+
+    <script>
+        function logout(){
+            window.location.href = "login.html";
+        }
+
+        function searchHalls(){
+            const city = document.getElementById('city').value.toLowerCase();
+            const locality = document.getElementById('locality').value.toLowerCase();
+            const halls = JSON.parse(localStorage.getItem('halls')) || [];
+
+            const results = halls.filter(h => 
+                h.city.toLowerCase().includes(city) && 
+                h.locality.toLowerCase().includes(locality)
+            );
+
+            const listDiv = document.getElementById('hallsList');
+            listDiv.innerHTML = "";
+
+            if(results.length === 0){
+                listDiv.innerHTML = "<p>No halls found.</p>";
+                return;
+            }
+
+            results.forEach(h => {
+                const div = document.createElement('div');
+                div.classList.add('hall');
+                div.innerHTML = `
+                    <h3>${h.name}</h3>
+                    <p>City: ${h.city}</p>
+                    <p>Locality: ${h.locality}</p>
+                    <button onclick="bookHall('${h.name}')">Book</button>
+                `;
+                listDiv.appendChild(div);
+            });
+        }
+
+        function bookHall(name){
+            const date = prompt("Enter Date of Function:");
+            const purpose = prompt("Purpose of the hall:");
+            const people = prompt("Number of people:");
+            const hours = prompt("How many hours required:");
+            const contact = prompt("Contact Details:");
+            const address = prompt("Address:");
+
+            const booking = {name, date, purpose, people, hours, contact, address};
+            const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+            bookings.push(booking);
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+
+            alert("Hall booked successfully!");
+        }
+    </script>
 </body>
 </html>
