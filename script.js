@@ -40,7 +40,7 @@ if(loginForm){
             const user = users.find(u => u.username === username && u.password === password);
             if(user){
                 alert("User Login Successful!");
-                window.location.href = 'index.html';
+                window.location.href = 'user.html';
             } else {
                 alert("Invalid Username or Password!");
             }
@@ -148,3 +148,4 @@ function displayBookings(){
 }
 
 if(document.querySelector('#bookingTable')) displayBookings();
+
