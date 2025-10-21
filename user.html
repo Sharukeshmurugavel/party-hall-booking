@@ -5,79 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>User - Party Hall Booking</title>
 <link rel="stylesheet" href="style.css">
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: url('diamond_banquet_hall_with_seating_arrangement_for_conference_and_weddings4_wq7t1z.avif') no-repeat center center fixed;
-        background-size: cover;
-        margin: 0;
-        padding: 0;
-        text-align: center;
-    }
-
-    h1 {
-        background: rgba(76, 175, 80, 0.9);
-        color: white;
-        padding: 20px;
-        margin: 0;
-    }
-
-    .search-section {
-        background: rgba(255, 255, 255, 0.95);
-        margin: 30px auto;
-        padding: 20px;
-        border-radius: 10px;
-        width: 300px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    }
-
-    input, button {
-        width: 90%;
-        padding: 10px;
-        margin: 10px 0;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
-
-    button {
-        background: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background: #45a049;
-    }
-
-    .hall {
-        background: rgba(255, 255, 255, 0.95);
-        margin: 10px auto;
-        padding: 10px;
-        width: 80%;
-        border-radius: 8px;
-        box-shadow: 0 0 5px rgba(0,0,0,0.2);
-    }
-
-    .logout-btn {
-        background: crimson;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin: 10px;
-    }
-
-    .logout-btn:hover {
-        background: darkred;
-    }
-</style>
 </head>
+
 <body>
     <h1>Welcome User</h1>
-    <button class="logout-btn" onclick="logout()">Logout</button>
-
+    <button onclick="logout()">Logout</button>
+    
     <div class="search-section">
         <h2>Search Party Halls</h2>
         <input type="text" id="city" placeholder="Enter City">
@@ -87,6 +20,57 @@
 
     <div id="hallsList"></div>
 
-    <script src="script.js"></script>
+    <script>
+        function logout(){
+            window.location.href = "login.html";
+        }
+
+        function searchHalls(){
+            const city = document.getElementById('city').value.toLowerCase();
+            const locality = document.getElementById('locality').value.toLowerCase();
+            const halls = JSON.parse(localStorage.getItem('halls')) || [];
+
+            const results = halls.filter(h => 
+                h.city.toLowerCase().includes(city) && 
+                h.locality.toLowerCase().includes(locality)
+            );
+
+            const listDiv = document.getElementById('hallsList');
+            listDiv.innerHTML = "";
+
+            if(results.length === 0){
+                listDiv.innerHTML = "<p>No halls found.</p>";
+                return;
+            }
+
+            results.forEach(h => {
+                const div = document.createElement('div');
+                div.classList.add('hall');
+                div.innerHTML = `
+                    <h3>${h.name}</h3>
+                    <p>City: ${h.city}</p>
+                    <p>Locality: ${h.locality}</p>
+                    <button onclick="bookHall('${h.name}')">Book</button>
+                `;
+                listDiv.appendChild(div);
+            });
+        }
+
+        function bookHall(name){
+            const date = prompt("Enter Date of Function:");
+            const purpose = prompt("Purpose of the hall:");
+            const people = prompt("Number of people:");
+            const hours = prompt("How many hours required:");
+            const contact = prompt("Contact Details:");
+            const address = prompt("Address:");
+
+            const booking = {name, date, purpose, people, hours, contact, address};
+            const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+            bookings.push(booking);
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+
+            alert("Hall booked successfully!");
+        }
+    </script>
 </body>
 </html>
