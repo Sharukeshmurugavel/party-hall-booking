@@ -1,43 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Party Hall Booking</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Party Hall Booking</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Admin Dashboard</h1>
+    <h1>Admin Dashboard</h1>
+    <button onclick="logout()">Logout</button>
 
-        <div class="add-hall">
-            <h2>Add Party Hall</h2>
-            <form id="addHallForm">
-                <input type="text" id="hallName" placeholder="Hall Name" required>
-                <input type="text" id="city" placeholder="City" required>
-                <input type="text" id="locality" placeholder="Locality" required>
-                <input type="number" id="capacity" placeholder="Capacity" required>
-                <button type="submit">Add Hall</button>
-            </form>
-        </div>
-
-        <div class="booking-list">
-            <h2>Booked Halls</h2>
-            <table id="bookingTable">
-                <thead>
-                    <tr>
-                        <th>User</th>
-                        <th>Hall</th>
-                        <th>Date</th>
-                        <th>Purpose</th>
-                        <th>People</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+    <div class="add-hall">
+        <h2>Add Party Hall</h2>
+        <input type="text" id="hallName" placeholder="Hall Name">
+        <input type="text" id="city" placeholder="City">
+        <input type="text" id="locality" placeholder="Locality">
+        <button onclick="addHall()">Add Hall</button>
     </div>
 
-    <script src="script.js"></script>
+    <div class="view-bookings">
+        <h2>Bookings</h2>
+        <table border="1" id="bookingTable">
+            <tr>
+                <th>Hall</th>
+                <th>Date</th>
+                <th>Purpose</th>
+                <th>People</th>
+                <th>Hours</th>
+                <th>Contact</th>
+                <th>Address</th>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function logout(){
+            window.location.href = "login.html";
+        }
+
+        function addHall(){
+            const name = document.getElementById('hallName').value;
+            const city = document.getElementById('city').value;
+            const locality = document.getElementById('locality').value;
+
+            if(!name || !city || !locality){
+                alert("Please fill all fields!");
+                return;
+            }
+
+            const halls = JSON.parse(localStorage.getItem('halls')) || [];
+            halls.push({name, city, locality});
+            localStorage.setItem('halls', JSON.stringify(halls));
+            alert("Hall added successfully!");
+
+            document.getElementById('hallName').value = '';
+            document.getElementById('city').value = '';
+            document.getElementById('locality').value = '';
+        }
+
+        function loadBookings(){
+            const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+            const table = document.getElementById('bookingTable');
+
+            bookings.forEach(b => {
+                const row = table.insertRow();
+                row.insertCell(0).innerText = b.name;
+                row.insertCell(1).innerText = b.date;
+                row.insertCell(2).innerText = b.purpose;
+                row.insertCell(3).innerText = b.people;
+                row.insertCell(4).innerText = b.hours;
+                row.insertCell(5).innerText = b.contact;
+                row.insertCell(6).innerText = b.address;
+            });
+        }
+
+        loadBookings();
+    </script>
 </body>
 </html>
