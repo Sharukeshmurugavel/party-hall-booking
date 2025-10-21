@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Party Hall Booking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+
+        <div class="add-hall">
+            <h2>Add Party Hall</h2>
+            <form id="addHallForm">
+                <input type="text" id="hallName" placeholder="Hall Name" required>
+                <input type="text" id="city" placeholder="City" required>
+                <input type="text" id="locality" placeholder="Locality" required>
+                <input type="number" id="capacity" placeholder="Capacity" required>
+                <button type="submit">Add Hall</button>
+            </form>
+        </div>
+
+        <div class="booking-list">
+            <h2>Booked Halls</h2>
+            <table id="bookingTable">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Hall</th>
+                        <th>Date</th>
+                        <th>Purpose</th>
+                        <th>People</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
